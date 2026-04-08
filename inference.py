@@ -20,12 +20,12 @@ from openai import OpenAI
 load_dotenv()
 
 # ── Environment variables ───────────────────────────────────────────────────
-API_BASE_URL = os.getenv("API_BASE_URL") or ("https://router.huggingface.co/v1")
-MODEL_NAME   = os.getenv("MODEL_NAME") or ("qwen/qwen-2.5-72b-instruct")
-API_KEY      = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
+API_BASE_URL     = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+MODEL_NAME       = os.getenv("MODEL_NAME", "qwen/qwen-2.5-72b-instruct")
+HF_TOKEN         = os.getenv("HF_TOKEN")
 
-if not API_KEY:
-    raise ValueError("HF_TOKEN or API_KEY environment variable is required")
+if HF_TOKEN is None:
+    raise ValueError("HF_TOKEN environment variable is required")
 
 # ── Import environment directly (no HTTP client needed) ────────────────────
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -351,7 +351,7 @@ Respond with ONE JSON object:"""
 
 def run_task(task_name: str) -> Dict:
     env       = TeacherWorkspaceEnvironment()
-    client    = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
+    client    = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
     max_steps = MAX_STEPS[task_name]
 
     history:   List[str]   = []
