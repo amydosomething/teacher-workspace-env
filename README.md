@@ -1,3 +1,13 @@
+---
+title: Teacher Workspace Env
+emoji: 🏫
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8000
+---
+
+
 # 🏫 Teacher Workspace Env
 
 > A real-world OpenEnv RL environment simulating a teacher's daily administrative workflow across Google Classroom, Google Sheets, Gmail, and Google Calendar/Meet.
