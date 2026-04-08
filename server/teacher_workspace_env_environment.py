@@ -1171,7 +1171,7 @@ class TeacherWorkspaceEnvironment(Environment):
             if all(any(r.lower() in str(h).lower() for h in headers) for r in required):
                 score += 0.35
 
-        return round(min(score, 1.0), 2)
+        return round(min(score, 0.99), 2)
 
     def _grade_grade_and_notify(self) -> float:
         """
@@ -1233,7 +1233,7 @@ class TeacherWorkspaceEnvironment(Environment):
         if mail_002 and mail_002.get("starred"):
             score += 0.15
 
-        return round(min(score, 1.0), 2)
+        return round(min(score, 0.99), 2)
 
     def _grade_end_of_semester(self) -> float:
         """
@@ -1344,7 +1344,7 @@ class TeacherWorkspaceEnvironment(Environment):
         meet_score = (correct_meets / max(len(failing_students), 1)) - (spurious_meets * 0.20)
         score += max(meet_score, 0.0) * 0.20
 
-        return round(min(score, 1.0), 2)
+        return round(min(score, 0.99), 2)
 
     # ══════════════════════════════════════════════════════════════════════
     # ── HELPERS ───────────────────────────────────────────────────────────
@@ -1436,4 +1436,4 @@ class TeacherWorkspaceEnvironment(Environment):
         An episode ends when the grader score reaches 1.0.
         We run a lightweight check here so the agent gets a done=True signal.
         """
-        return self.grade() >= 1.0
+        return self.grade() >= 0.99

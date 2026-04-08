@@ -485,8 +485,8 @@ def run_task(task_name: str) -> Dict:
                 break
 
         # ── Score from grader (exact holistic check) ──────────────────────
-        score   = round(min(max(env.grade(), 0.0), 1.0), 2)
-        success = score >= 1.0
+        score   = round(min(max(env.grade(), 0.01), 0.99), 2)
+        success = score >= 0.99
 
     except Exception as e:
         print(f"[ERROR] Task '{task_name}' crashed: {e}", flush=True)
