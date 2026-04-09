@@ -17,6 +17,9 @@ import time
 from typing import Generator
 
 import gradio as gr
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 # ── Reuse everything from inference.py ───────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -299,7 +302,24 @@ def _render_calendar(calendar: list) -> str:
     return "\n".join(rows)
 
 
+def _make_reward_chart(reward_data: list):
+    fig, ax = plt.subplots(figsize=(5, 4))
+    if reward_data:
+        steps = [r[0] for r in reward_data]
+        vals  = [r[1] for r in reward_data]
+        ax.plot(steps, vals, marker="o", markersize=3, linewidth=1.5, color="#4f86f7")
+        ax.axhline(0, color="gray", linewidth=0.5, linestyle="--")
+    ax.set_xlabel("Step")
+    ax.set_ylabel("Cumulative reward")
+    ax.set_title("Cumulative reward")
+    fig.tight_layout()
+    return fig
 
+
+
+    if r > 0:   return f"<span style='color:green'>+{r:.2f}</span>"
+    if r < 0:   return f"<span style='color:red'>{r:.2f}</span>"
+    return f"{r:.2f}"
 
 
 
@@ -348,7 +368,6 @@ def run_ui(task_name: str):
         ])
 
         reward_data.append([step, round(cum, 3)])
-        reward_md = f"**Cumulative reward:** `{round(cum, 3)}`"
 
         completed_md = "\n".join(f"- ✅ {c}" for c in state["completed"]) or "_None yet_"
         emoji    = "🏆" if state["success"] else ("🔄" if not done else "⚠️")
@@ -365,7 +384,7 @@ def run_ui(task_name: str):
             score_md,
             completed_md,
             step_rows,
-            reward_md,
+            _make_reward_chart(reward_data),
             sheets_md,
             inbox_md,
             sent_md,
@@ -421,7 +440,7 @@ with gr.Blocks(title="Teacher Workspace Env — Agent Viewer") as demo:
             )
         with gr.Column(scale=2):
             gr.Markdown("### Cumulative reward")
-            reward_chart = gr.Markdown("_Reward will appear here_")
+            reward_chart = gr.Plot(label="Cumulative reward")
 
     gr.Markdown("---")
     gr.Markdown("## Workspace state")
