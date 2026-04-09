@@ -58,6 +58,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app import demo
 gr.mount_gradio_app(app, demo, path="/")
 
+
 def main() -> None:
     """
     Entry point for direct execution via uv run or python -m.
