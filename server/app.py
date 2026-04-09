@@ -55,7 +55,7 @@ app = create_app(
 import gradio as gr
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import demo
+from gradio_app import demo
 gr.mount_gradio_app(app, demo, path="/")
 
 def main() -> None:
